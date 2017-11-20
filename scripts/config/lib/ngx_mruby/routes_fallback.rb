@@ -9,8 +9,11 @@ req       = Nginx::Request.new
 uri       = req.var.uri
 proxies   = config["proxies"] || {}
 redirects = config["redirects"] || {}
+default_fallback = config["default_fallback"]
 
-if proxy = NginxConfigUtil.match_proxies(proxies.keys, uri)
+if default_fallback
+  default_fallback
+elsif proxy = NginxConfigUtil.match_proxies(proxies.keys, uri)
   "@#{proxy}"
 elsif redirect = NginxConfigUtil.match_redirects(redirects.keys, uri)
   "@#{redirect}"
